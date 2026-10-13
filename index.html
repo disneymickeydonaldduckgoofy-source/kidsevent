@@ -59,6 +59,9 @@ body{background:var(--ground);color:var(--ink);font-family:"IBM Plex Sans JP","H
   if (new URLSearchParams(location.search).get('launch') === '1') {
     location.replace(document.getElementById('go').href);
   }
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(function(){});
+  }
 </script>
 </body>
 </html>
