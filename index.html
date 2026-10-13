@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>札幌こどもイベント週報</title>
+<meta name="description" content="札幌市内・近郊の子ども・親子向けイベントまとめ 札幌こどもイベント週報 の入口">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#141414">
+<meta name="color-scheme" content="light">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="ke1-favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="ke1-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="KIDS EVENT">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;700&family=IBM+Plex+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--ground:#efefec;--panel:#ffffff;--ink:#141414;--sub:#5e5a52;--rule:#dcdcd8;--accent:#ff9500;--accent-fg:#141414}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ground);color:var(--ink);font-family:"IBM Plex Sans JP","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;min-height:100vh;min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+.panel{width:100%;max-width:420px;background:var(--panel);border:1px solid var(--rule)}
+.band{background:var(--ink);color:#ffffff;display:flex;align-items:baseline;justify-content:space-between;padding:12px 16px}
+.band h1{margin:0;font-family:"IBM Plex Mono",monospace;font-weight:700;font-size:24px;letter-spacing:3px;line-height:1}
+.band span{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:1px;color:#a9a59c}
+.body{padding:24px 16px 20px;display:grid;gap:18px;justify-items:center;text-align:center}
+.body img{width:112px;height:112px;display:block;border:1px solid var(--rule)}
+.msg{margin:0;font-size:15px;line-height:1.7;word-break:auto-phrase}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:52px;border:0;border-radius:0;font:700 16px "IBM Plex Sans JP",system-ui,sans-serif;text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--accent);color:var(--accent-fg)}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.steps{width:100%;margin:0;padding:0;list-style:none;border-top:1px solid var(--rule);text-align:left;counter-reset:step}
+.steps li{position:relative;border-bottom:1px solid var(--rule);font-size:14px;line-height:1.6;padding:10px 12px 10px 48px;counter-increment:step}
+.steps li::before{content:counter(step);position:absolute;left:0;top:0;bottom:0;width:36px;border-right:1px solid var(--rule);font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:13px;display:flex;align-items:center;justify-content:center}
+.foot{border-top:1px solid var(--rule);padding:8px 16px;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--sub);display:flex;justify-content:space-between}
+</style>
+</head>
+<body>
+<main class="panel">
+  <header class="band"><h1>KIDS EVENT</h1><span>LAUNCHER</span></header>
+  <div class="body">
+    <p class="msg">ホーム画面に追加すると、このアイコンから札幌こどもイベント週報を開けます。</p>
+    <img src="ke1-192.png" alt="" width="112" height="112">
+    <a class="btn primary" id="go" href="https://claude.ai/artifact/EsT9Bwtxi9Kn2oCkh5ap3T">札幌こどもイベント週報を開く</a>
+    <ol class="steps">
+      <li>右上の「︙」をタップ</li>
+      <li>「ホーム画面に追加」または「アプリをインストール」</li>
+      <li>「追加」「インストール」をタップ</li>
+    </ol>
+  </div>
+  <footer class="foot"><span>kidsevent</span><span>v1</span></footer>
+</main>
+<script>
+  // ホーム画面（start_url=./?launch=1）から開かれたときだけ本体へ転送する
+  if (new URLSearchParams(location.search).get('launch') === '1') {
+    location.replace(document.getElementById('go').href);
+  }
+</script>
+</body>
+</html>
