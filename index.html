@@ -3,18 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>札幌こどもイベント週報</title>
-<meta name="description" content="札幌市内・近郊の子ども・親子向けイベントまとめ 札幌こどもイベント週報 の入口">
+<title>キッズイベント</title>
+<meta name="description" content="札幌市内・近郊の子ども・親子向けイベントまとめ キッズイベント の入口">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#141414">
 <meta name="color-scheme" content="light">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="32x32" href="ke1-favicon-32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="ke1-180.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<meta name="apple-mobile-web-app-title" content="KIDS EVENT">
+<meta name="apple-mobile-web-app-title" content="キッズイベント">
 <meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="ke2-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="ke2-192.png">
+<link rel="apple-touch-icon" href="ke2-180.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;700&family=IBM+Plex+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
@@ -32,36 +33,74 @@ body{background:var(--ground);color:var(--ink);font-family:"IBM Plex Sans JP","H
 .msg{margin:0;font-size:15px;line-height:1.7;word-break:auto-phrase}
 .btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:52px;border:0;border-radius:0;font:700 16px "IBM Plex Sans JP",system-ui,sans-serif;text-decoration:none;cursor:pointer}
 .btn.primary{background:var(--accent);color:var(--accent-fg)}
+.btn.secondary{background:var(--panel);color:var(--ink);border:1px solid var(--ink)}
 .btn:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
 .steps{width:100%;margin:0;padding:0;list-style:none;border-top:1px solid var(--rule);text-align:left;counter-reset:step}
 .steps li{position:relative;border-bottom:1px solid var(--rule);font-size:14px;line-height:1.6;padding:10px 12px 10px 48px;counter-increment:step}
 .steps li::before{content:counter(step);position:absolute;left:0;top:0;bottom:0;width:36px;border-right:1px solid var(--rule);font-family:"IBM Plex Mono",monospace;font-weight:500;font-size:13px;display:flex;align-items:center;justify-content:center}
 .foot{border-top:1px solid var(--rule);padding:8px 16px;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--sub);display:flex;justify-content:space-between}
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
 <main class="panel">
   <header class="band"><h1>KIDS EVENT</h1><span>LAUNCHER</span></header>
   <div class="body">
-    <p class="msg">ホーム画面に追加すると、このアイコンから札幌こどもイベント週報を開けます。</p>
-    <img src="ke1-192.png" alt="" width="112" height="112">
-    <a class="btn primary" id="go" href="https://claude.ai/artifact/EsT9Bwtxi9Kn2oCkh5ap3T">札幌こどもイベント週報を開く</a>
-    <ol class="steps">
+    <p class="msg" id="msg">ホーム画面に追加すると、このアイコンからキッズイベントを開けます。</p>
+    <img src="ke2-192.png" alt="" width="112" height="112">
+    <a class="btn primary" id="go" href="https://claude.ai/artifact/EsT9Bwtxi9Kn2oCkh5ap3T">キッズイベントを開く</a>
+    <button class="btn secondary" id="install" type="button" hidden>ホーム画面に追加</button>
+    <ol class="steps" id="steps">
       <li>右上の「︙」をタップ</li>
       <li>「ホーム画面に追加」または「アプリをインストール」</li>
       <li>「追加」「インストール」をタップ</li>
     </ol>
   </div>
-  <footer class="foot"><span>kidsevent</span><span>v1</span></footer>
+  <footer class="foot"><span>kidsevent</span><span>v2</span></footer>
 </main>
 <script>
-  // ホーム画面（start_url=./?launch=1）から開かれたときだけ本体へ転送する
-  if (new URLSearchParams(location.search).get('launch') === '1') {
-    location.replace(document.getElementById('go').href);
+(function(){
+  var URL_APP = document.getElementById("go").href;
+  var q = new URLSearchParams(location.search);
+  // ホーム画面（start_url=./?launch=1）やインストール済みの窓から開いたときだけ本体へ転送する
+  var standalone = q.get("launch") === "1" ||
+    (window.matchMedia && (matchMedia("(display-mode: standalone)").matches || matchMedia("(display-mode: minimal-ui)").matches)) ||
+    window.navigator.standalone === true;
+  var KEY = "kidsevent-opened";
+  var already = false;
+  try { already = sessionStorage.getItem(KEY) === "1"; } catch (e) {}
+
+  if (standalone) {
+    document.getElementById("steps").hidden = true;
+    if (!already) {
+      document.getElementById("msg").textContent = "キッズイベントを開いています…";
+      try { sessionStorage.setItem(KEY, "1"); } catch (e) {}
+      location.replace(URL_APP);
+    } else {
+      document.getElementById("msg").textContent = "下のボタンからキッズイベントを開けます。";
+    }
   }
+
+  // Chromeがインストールできる状態になったら「ホーム画面に追加」ボタンを出す
+  var deferred = null, btn = document.getElementById("install");
+  window.addEventListener("beforeinstallprompt", function(e){
+    e.preventDefault(); deferred = e;
+    if (!standalone) btn.hidden = false;
+  });
+  btn.addEventListener("click", function(){
+    if (!deferred) return;
+    deferred.prompt();
+    deferred.userChoice.then(function(){ deferred = null; btn.hidden = true; });
+  });
+  window.addEventListener("appinstalled", function(){
+    btn.hidden = true;
+    document.getElementById("msg").textContent = "ホーム画面に追加しました。アイコンから開けます。";
+  });
+
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").catch(function(){});
   }
+})();
 </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 // Kids Event launcher: network-first, falls back to cache when offline.
-const CACHE = "kidsevent-launcher-v1";
-const CORE = ["./", "index.html", "manifest.webmanifest", "ke1-favicon-32.png", "ke1-180.png", "ke1-192.png", "ke1-512.png", "ke1-maskable-512.png"];
+const CACHE = "kidsevent-launcher-v2";
+const CORE = ["./", "index.html", "manifest.webmanifest", "ke2-32.png", "ke2-180.png", "ke2-192.png", "ke2-512.png", "ke2-maskable-512.png"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));
